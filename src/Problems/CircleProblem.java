@@ -1,5 +1,5 @@
 package Problems;
 
-public class CircleProblem extends BaseProblem {
+public class CircleProblem extends AbstractProblem {
 
 }

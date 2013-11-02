@@ -1,5 +1,8 @@
 package Topology;
 
-public class AbstractTopology {
+import PSOSolver.Particle;
 
+
+public abstract class AbstractTopology {
+	public abstract Particle[] getNeighbours(Particle me);
 }

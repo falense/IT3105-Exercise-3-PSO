@@ -1,5 +1,5 @@
 package Problems;
 
-public class KnapSackWeightValueProblem extends BaseProblem {
+public class KnapSackWeightValueProblem extends AbstractProblem {
 
 }
