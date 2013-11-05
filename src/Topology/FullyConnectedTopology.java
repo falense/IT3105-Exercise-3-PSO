@@ -1,7 +1,15 @@
 package Topology;
 
-import Position.AbstractPosition;
+import PSOSolver.Particle;
 
-public class FullyConnectedTopology extends AbstractPosition {
+public class FullyConnectedTopology extends AbstractTopology {
+
+	public FullyConnectedTopology() {
+	}
+
+	@Override
+	public Particle[] getNeighbours(Particle me) {
+		return particles;
+	}
 
 }
