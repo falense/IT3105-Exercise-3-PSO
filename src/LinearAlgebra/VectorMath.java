@@ -29,4 +29,11 @@ public class VectorMath {
 		}
 		return r;
 	}
+	public static Vector elementMultiplication( final Vector v1, final Vector v2){
+		Vector r = new Vector(v1.size());
+		for (int index = 0; index < v1.size(); index++){
+			r.set(index, v1.get(index)*v2.get(index));
+		}
+		return r;
+	}
 }

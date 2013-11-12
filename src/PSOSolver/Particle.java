@@ -17,6 +17,7 @@ public class Particle {
 	private Vector velocity;
 	private double globalAttraction;
 	private double localAttraction;
+	private double inertiaWeight;
 	public Particle(AbstractProblem problem, AbstractTopology topology){
 		this.topology = topology;
 		this.problem = problem;
@@ -25,9 +26,10 @@ public class Particle {
 		bestPosition = position;
 		velocity = new Vector(vectorSize);
 		Random r = new Random();
+		double scaleFactor = problem.maxVectorValue() - problem.minVectorValue();
 		for (int index = 0; index < vectorSize; index++){
-			position.set(index, (r.nextDouble()-0.5)*200);
-			velocity.set(index, (r.nextDouble()-0.5)*100);
+			position.set(index, r.nextDouble()*scaleFactor-problem.minVectorValue());
+			velocity.set(index, (r.nextDouble()-0.5)*10);
 		}
 		System.out.println("New particle: ");
 		System.out.println(position.toString());
@@ -49,13 +51,13 @@ public class Particle {
 	void updateVelocity() {
 		Random r = new Random();
 		r.nextDouble();
-		Vector part1 = new Vector(velocity);
+		Vector part1 = (new Vector(velocity)).multiply(inertiaWeight);
 		Vector part2 = VectorMath.sub(bestPosition,position).multiply(localAttraction*r.nextDouble());
 		Vector part3 = VectorMath.sub(getBestPositionGlobal(),position).multiply(globalAttraction*r.nextDouble());
 		Vector newVelocity = VectorMath.add(part1,VectorMath.add(part2,part3));
 		double absSpeed = VectorMath.euclidianDistance(newVelocity,new Vector(velocity.size()));
-		if (absSpeed > 50){
-			newVelocity.multiply(50.0/absSpeed);
+		if (absSpeed > 10){
+			newVelocity.multiply(10.0/absSpeed);
 		}
 		velocity = newVelocity;
 		//System.out.println(part1.toString() + " + " + part2.toString() + " + " + part3.toString());
@@ -83,7 +85,13 @@ public class Particle {
 		this.globalAttraction = globalAttraction;
 		
 	}
+	public void setIntertiaWeight(double inertiaWeight){
+		this.inertiaWeight = inertiaWeight;
+	}
 	public double getFitness(){
 		return positionFitness;
+	}
+	public String toString(){
+		return "Pos: " + position.toString() + ", Vel: " + velocity.toString() + ", Fitness " + positionFitness;
 	}
 }

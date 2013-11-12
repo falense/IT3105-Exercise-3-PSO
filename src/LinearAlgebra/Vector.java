@@ -62,6 +62,12 @@ public class Vector {
 		r += ")";
 		return r;
 	}
-	
+	public double sum(){
+		double sum = 0;
+		for (int index = 0; index < size(); index++){
+			sum += data[index];
+		}
+		return sum;
+	}
 	
 }
