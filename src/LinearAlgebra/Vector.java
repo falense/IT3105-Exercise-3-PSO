@@ -2,6 +2,8 @@ package LinearAlgebra;
 
 import javax.swing.Spring;
 
+import PSOSolver.ParticleManagerGUI;
+
 public class Vector {
 	private double [] data;
 	
@@ -69,5 +71,36 @@ public class Vector {
 		}
 		return sum;
 	}
-	
+
+	public static void main(String[] args) {
+		Vector v = new Vector(10);
+		for (int i = 0; i < 10; i++){
+			v.set(i, 1);
+		}
+		System.out.println(v.toString());
+		v.multiply(5);
+		System.out.println(v.toString());
+		v.multiply(-1);
+		System.out.println(v.toString());
+		System.out.println("Sum: " + v.sum());
+		System.out.println(new Vector(v).toString());
+		
+		
+		
+		Vector v2 = new Vector(10);
+		for (int i = 0; i < 10; i++){
+			v2.set(i,i);
+			v.set(i,1);
+		}
+		System.out.println(v.toString());
+		System.out.println(v2.toString());
+		System.out.println(VectorMath.add(v, v2).toString());
+		System.out.println("v-v2" + VectorMath.sub(v,v2).toString());
+		System.out.println("v2-v" + VectorMath.sub(v2,v).toString());
+		
+		double s = v2.sum();
+		System.out.println(v2.multiply(1.0/s));
+		System.out.println("Sum: " + v2.sum());
+		
+	}
 }

@@ -1,23 +1,22 @@
 package PSOSolver;
 
 import Problems.AbstractProblem;
-import Problems.CircleProblem1D;
 import Problems.CircleProblem2D;
-import Problems.KnapSackWeightProblem;
-import Problems.KnapSackWeightValueProblem;
 import Topology.AbstractTopology;
-import Topology.FullyConnectedTopology;
 import Topology.NearestNeighbourTopology;
 
 public class ParticleManager {
 	private Particle []particles;
-	private double localAttraction = 2.0;
-	private double globalAttraction = 2.0;
-	private double inertiaWeight = 0.5;
+	private double localAttraction = 0.0;
+	private double globalAttraction = 1.0;
+	private double inertiaWeight = 1;
+	private ParticleManagerGUI PMGUI;
 	public ParticleManager(int numParticles,AbstractProblem problem, AbstractTopology topology){
+		PMGUI = new ParticleManagerGUI();
+		PMGUI.setup();
 		particles = new Particle[numParticles];
 		for (int i = 0; i < numParticles; i++){
-			particles[i] = new Particle(problem,topology);
+			particles[i] = problem.generateParticle(problem,topology,i);
 			particles[i].setAttraction(localAttraction, globalAttraction);
 			particles[i].setIntertiaWeight(inertiaWeight);
 		}
@@ -32,12 +31,13 @@ public class ParticleManager {
 	}
 	
 	public void solve(){
-		for (int iteration = 0; iteration < 5000; iteration++){
+		for (int iteration = 0; iteration < 1000; iteration++){
 			step();
 			System.out.println("Iteration: " + iteration);
 			double globalBestFitness = getGlobalBestFitness();
+			PMGUI.addValue(0,globalBestFitness);
 			System.out.println("Global best fitness: " + globalBestFitness);
-			if (globalBestFitness < 0.0001){
+			if (false && globalBestFitness < 0.0001){
 				System.out.println("Fitness goal reached, aborting");
 				break;
 				
@@ -48,12 +48,12 @@ public class ParticleManager {
 		double bestFitness = Double.MAX_VALUE;
 		Particle b = null;
 		for (Particle p: particles){
-			if (p.getFitness() < bestFitness){
-				bestFitness = p.getFitness();
+			//System.out.println(p.getBestPositionValue());
+			if (p.getBestPositionValue() < bestFitness){
+				bestFitness = p.getBestPositionValue();
 				b = p;
 			}
 		}
-		System.out.print(b.getPosition().toString());
 		return bestFitness;
 	}
 	public static void main(String [] args){
@@ -61,8 +61,8 @@ public class ParticleManager {
 		CircleProblem2D prob = new CircleProblem2D();
 		//KnapSackWeightValueProblem prob = new KnapSackWeightValueProblem();
 		//FullyConnectedTopology top = new FullyConnectedTopology();
-		NearestNeighbourTopology top = new NearestNeighbourTopology(7);
-		ParticleManager pm = new ParticleManager(10,prob, top);
+		NearestNeighbourTopology top = new NearestNeighbourTopology(1);
+		ParticleManager pm = new ParticleManager(3,prob, top);
 		pm.solve();
 	}
 }

@@ -1,6 +1,8 @@
 package Problems;
 
 import LinearAlgebra.Vector;
+import PSOSolver.Particle;
+import Topology.AbstractTopology;
 
 public class CircleProblem2D extends CircleProblem {
 
@@ -17,5 +19,6 @@ public class CircleProblem2D extends CircleProblem {
 	public int getVectorSize() {
 		return 2;
 	}
+
 
 }

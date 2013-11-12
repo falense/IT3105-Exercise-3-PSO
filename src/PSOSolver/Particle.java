@@ -8,34 +8,44 @@ import Problems.AbstractProblem;
 import Topology.AbstractTopology;
 
 public class Particle {
-	private final AbstractTopology topology;
-	private final AbstractProblem problem;
-	private Vector position;
-	private double positionFitness;
-	private Vector bestPosition;
-	private double bestPositionFitness;
-	private Vector velocity;
-	private double globalAttraction;
-	private double localAttraction;
-	private double inertiaWeight;
-	public Particle(AbstractProblem problem, AbstractTopology topology){
+	protected final AbstractTopology topology;
+	protected final AbstractProblem problem;
+	
+	protected double globalAttraction;
+	protected double localAttraction;
+	protected double inertiaWeight;
+	
+	protected Vector position;
+	protected Vector velocity;
+	
+	protected double positionFitness;
+	protected Vector bestPosition;
+	protected double bestPositionFitness;
+	protected int iteration;
+	protected final int particleIndex;
+	
+	public Particle(AbstractProblem problem, AbstractTopology topology, int particleIndex){
 		this.topology = topology;
 		this.problem = problem;
+		this.particleIndex = particleIndex;
 		int vectorSize = problem.getVectorSize();
 		position = new Vector(vectorSize);
 		bestPosition = position;
 		velocity = new Vector(vectorSize);
+		initializeParticle();
+		bestPositionFitness = Double.MAX_VALUE;
+		iteration = 0;
+		evaluatePosition();
+	}
+	protected void initializeParticle(){
 		Random r = new Random();
 		double scaleFactor = problem.maxVectorValue() - problem.minVectorValue();
-		for (int index = 0; index < vectorSize; index++){
+		for (int index = 0; index < problem.getVectorSize(); index++){
 			position.set(index, r.nextDouble()*scaleFactor-problem.minVectorValue());
 			velocity.set(index, (r.nextDouble()-0.5)*10);
 		}
-		System.out.println("New particle: ");
-		System.out.println(position.toString());
-		System.out.println(velocity.toString());
 	}
-	private Vector getBestPositionGlobal(){
+	protected Vector getBestPositionGlobal(){
 		Particle [] neighbours = topology.getNeighbours(this);
 		Vector bestNeighbourPosition = null;
 		double bestNeighbourPositionValue = Double.MAX_VALUE;
@@ -47,6 +57,9 @@ public class Particle {
 		}
 		return bestNeighbourPosition;
 	}
+	public double getBestPositionValue(){
+		return bestPositionFitness;
+	}
 	
 	void updateVelocity() {
 		Random r = new Random();
@@ -55,7 +68,7 @@ public class Particle {
 		Vector part2 = VectorMath.sub(bestPosition,position).multiply(localAttraction*r.nextDouble());
 		Vector part3 = VectorMath.sub(getBestPositionGlobal(),position).multiply(globalAttraction*r.nextDouble());
 		Vector newVelocity = VectorMath.add(part1,VectorMath.add(part2,part3));
-		double absSpeed = VectorMath.euclidianDistance(newVelocity,new Vector(velocity.size()));
+		double absSpeed = Math.sqrt(VectorMath.euclidianDistance(newVelocity,new Vector(velocity.size())));
 		if (absSpeed > 10){
 			newVelocity.multiply(10.0/absSpeed);
 		}
@@ -64,6 +77,14 @@ public class Particle {
 	}
 	void updatePosition() {
 		position = VectorMath.add(position, velocity);
+		for (int index = 0; index < position.size(); index++){
+			if (position.get(index) > problem.maxVectorValue()){
+				position.set(index, problem.maxVectorValue());
+			}
+			if (position.get(index) < problem.minVectorValue()){
+				position.set(index, problem.minVectorValue());
+			}
+		}
 	}
 	public Vector getPosition(){
 		return position;
@@ -72,6 +93,7 @@ public class Particle {
 		updateVelocity();
 		updatePosition();
 		evaluatePosition();
+		iteration++;
 	}
 	private void evaluatePosition(){
 		positionFitness = problem.evaluate(position);

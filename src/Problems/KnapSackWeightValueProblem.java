@@ -7,6 +7,9 @@ import java.util.LinkedList;
 
 import LinearAlgebra.Vector;
 import LinearAlgebra.VectorMath;
+import PSOSolver.KnapSackParticle;
+import PSOSolver.Particle;
+import Topology.AbstractTopology;
 class KnapSackPackage{
 	public final double value;
 	public final double weight;
@@ -30,6 +33,7 @@ public class KnapSackWeightValueProblem extends AbstractProblem {
 	        	KnapSackPackage p = new KnapSackPackage(value, weight);
 	        	listPackages.add(p);
 	            line = br.readLine();
+	            if (listPackages.size() > 100) break;
 	        }
 	        packageWeights = new Vector(listPackages.size());
 	        packageValues = new Vector(listPackages.size());
@@ -75,5 +79,10 @@ public class KnapSackWeightValueProblem extends AbstractProblem {
 	public double minVectorValue() {
 		// TODO Auto-generated method stub
 		return 0.0;
+	}
+	@Override
+	public Particle generateParticle(AbstractProblem problem,
+			AbstractTopology topology, int particleIndex) {
+		return new KnapSackParticle(problem, topology, particleIndex);
 	}
 }

@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 import LinearAlgebra.Vector;
 import LinearAlgebra.VectorMath;
+import PSOSolver.Particle;
+import Topology.AbstractTopology;
 
 public class KnapSackWeightProblem extends AbstractProblem {
 
@@ -33,6 +35,13 @@ public class KnapSackWeightProblem extends AbstractProblem {
 	public double minVectorValue() {
 		// TODO Auto-generated method stub
 		return 0.0;
+	}
+
+	@Override
+	public Particle generateParticle(AbstractProblem problem,
+			AbstractTopology topology, int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
