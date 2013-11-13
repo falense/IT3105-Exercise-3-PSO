@@ -1,28 +1,30 @@
-package PSOSolver;
+package PSOSolver.Particles;
 
 import java.util.Random;
 
 import LinearAlgebra.Vector;
 import LinearAlgebra.VectorMath;
+import PSOSolver.Topology.AbstractTopology;
 import Problems.AbstractProblem;
-import Topology.AbstractTopology;
 
-public class KnapSackParticle extends Particle {
+public class KnapSackParticle extends AbstractParticle {
 
 	public KnapSackParticle(AbstractProblem problem, AbstractTopology topology, int particleIndex) {
 		super(problem, topology, particleIndex);
 	}
 	@Override
-	protected void initializeParticle(){
+	protected void initializeParticle(){/*
 		double fitness = problem.evaluate(position);
 		Random r = new Random();
 		int index = -1;
-		while(fitness != 0){
-			index = r.nextInt()%problem.getVectorSize();
+		while(fitness < 1.0){
+			index = r.nextInt(problem.getVectorSize());
 			position.set(index, 1.0);
 			fitness = problem.evaluate(position);
+			System.out.println(fitness);
 		}
-		position.set(index,0.0);
+		position.set(index,0.0);*/
+		position.set(particleIndex%problem.getVectorSize(), 1.0);
 	}
 	void updateVelocity() {
 			Random r = new Random();
@@ -43,18 +45,24 @@ public class KnapSackParticle extends Particle {
 			velocity = newVelocity;
 			//System.out.println(part1.toString() + " + " + part2.toString() + " + " + part3.toString());
 		}
-	private double sigmoid(double v, double k, double id){
-		double t = 1.0 + Math.exp(v);
+	private double sigmoid(double v){
+		double t = 1.0 + Math.exp(-v);
 		return 1.0/t;
 	}
 	void updatePosition() {
 		Random r = new Random();
+		int c = 0;
 		for (int index = 0; index < position.size(); index++){
-			if (r.nextDouble() < sigmoid(velocity.get(index),iteration,index*particleIndex)){
-				position.set(index, 0);
+			double old = position.get(index);
+			if (r.nextDouble() < sigmoid(velocity.get(index))){
+				position.set(index, 1);
 			}
 			else{
-				position.set(index, 1);
+				position.set(index, 0);
+			}
+			if (Math.abs(old-position.get(index)) > 0.5){
+				c++;
+				if (c > 4) break;
 			}
 		}
 		

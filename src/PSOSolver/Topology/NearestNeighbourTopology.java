@@ -1,7 +1,8 @@
-package Topology;
+package PSOSolver.Topology;
 
 import LinearAlgebra.VectorMath;
-import PSOSolver.Particle;
+import PSOSolver.Particles.AbstractParticle;
+import PSOSolver.Particles.Particle;
 
 public class NearestNeighbourTopology extends AbstractTopology {
 	private int neighbourCount;
@@ -10,8 +11,8 @@ public class NearestNeighbourTopology extends AbstractTopology {
 	}
 
 	@Override
-	public Particle[] getNeighbours(Particle me) {
-		Particle [] neighbours = new Particle[neighbourCount];
+	public AbstractParticle[] getNeighbours(AbstractParticle me) {
+		AbstractParticle [] neighbours = new AbstractParticle[neighbourCount];
 		for (int i = 0; i < neighbourCount; i++){
 			if (i == 0){
 				neighbours[i] = getClosestParticle(me, 0);
@@ -23,12 +24,12 @@ public class NearestNeighbourTopology extends AbstractTopology {
 		}
 		return neighbours;
 	}
-	private Particle getClosestParticle(Particle reference, double minDistance){
-		Particle closest = null;
+	private AbstractParticle getClosestParticle(AbstractParticle me, double minDistance){
+		AbstractParticle closest = null;
 		double closestDistance = Double.MAX_VALUE;
-		for (Particle p: particles){
-			double distance = VectorMath.euclidianDistance(reference.getPosition(), p.getPosition());
-			if (distance > minDistance && closestDistance > distance){
+		for (AbstractParticle p: particles){
+			double distance = VectorMath.euclidianDistance(me.getPosition(), p.getPosition());
+			if (distance >= minDistance && closestDistance > distance){
 				closestDistance = distance;
 				closest = p;
 			}

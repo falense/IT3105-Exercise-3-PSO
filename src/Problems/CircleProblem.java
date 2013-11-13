@@ -1,7 +1,7 @@
 package Problems;
 
-import PSOSolver.Particle;
-import Topology.AbstractTopology;
+import PSOSolver.Particles.Particle;
+import PSOSolver.Topology.AbstractTopology;
 
 public abstract class CircleProblem extends AbstractProblem {
 	@Override

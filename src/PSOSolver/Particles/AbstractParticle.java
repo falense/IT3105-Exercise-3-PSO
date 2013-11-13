@@ -1,13 +1,13 @@
-package PSOSolver;
+package PSOSolver.Particles;
 
 import java.util.Random;
 
 import LinearAlgebra.Vector;
 import LinearAlgebra.VectorMath;
+import PSOSolver.Topology.AbstractTopology;
 import Problems.AbstractProblem;
-import Topology.AbstractTopology;
 
-public class Particle {
+public abstract class AbstractParticle {
 	protected final AbstractTopology topology;
 	protected final AbstractProblem problem;
 	
@@ -18,13 +18,13 @@ public class Particle {
 	protected Vector position;
 	protected Vector velocity;
 	
-	protected double positionFitness;
+	private double positionFitness;
 	protected Vector bestPosition;
 	protected double bestPositionFitness;
 	protected int iteration;
 	protected final int particleIndex;
 	
-	public Particle(AbstractProblem problem, AbstractTopology topology, int particleIndex){
+	public AbstractParticle(AbstractProblem problem, AbstractTopology topology, int particleIndex){
 		this.topology = topology;
 		this.problem = problem;
 		this.particleIndex = particleIndex;
@@ -46,10 +46,11 @@ public class Particle {
 		}
 	}
 	protected Vector getBestPositionGlobal(){
-		Particle [] neighbours = topology.getNeighbours(this);
+		AbstractParticle[] neighbours = topology.getNeighbours(this);
 		Vector bestNeighbourPosition = null;
 		double bestNeighbourPositionValue = Double.MAX_VALUE;
-		for (Particle p: neighbours){
+		for (AbstractParticle p: neighbours){
+			if (p == null) System.err.println("Error nul");
 			if (p.bestPositionFitness < bestNeighbourPositionValue){
 				bestNeighbourPositionValue = p.bestPositionFitness;
 				bestNeighbourPosition = p.bestPosition;
@@ -89,16 +90,16 @@ public class Particle {
 	public Vector getPosition(){
 		return position;
 	}
-	void step(){
+	public void step(){
 		updateVelocity();
 		updatePosition();
 		evaluatePosition();
 		iteration++;
 	}
 	private void evaluatePosition(){
-		positionFitness = problem.evaluate(position);
-		if (positionFitness < bestPositionFitness){
-			bestPositionFitness = positionFitness;
+		setPositionFitness(problem.evaluate(position));
+		if (getPositionFitness() < bestPositionFitness){
+			bestPositionFitness = getPositionFitness();
 			bestPosition = position;
 		}
 	}
@@ -111,9 +112,16 @@ public class Particle {
 		this.inertiaWeight = inertiaWeight;
 	}
 	public double getFitness(){
-		return positionFitness;
+		return getPositionFitness();
 	}
 	public String toString(){
-		return "Pos: " + position.toString() + ", Vel: " + velocity.toString() + ", Fitness " + positionFitness;
+		return "Pos: " + position.toString() + ", Vel: " + velocity.toString() + ", Fitness " + getPositionFitness();
 	}
+	public double getPositionFitness() {
+		return positionFitness;
+	}
+	public void setPositionFitness(double positionFitness) {
+		this.positionFitness = positionFitness;
+	}
+
 }

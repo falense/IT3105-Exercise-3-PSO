@@ -1,8 +1,8 @@
 package Problems;
 
 import LinearAlgebra.Vector;
-import PSOSolver.Particle;
-import Topology.AbstractTopology;
+import PSOSolver.Particles.Particle;
+import PSOSolver.Topology.AbstractTopology;
 
 public class CircleProblem2D extends CircleProblem {
 

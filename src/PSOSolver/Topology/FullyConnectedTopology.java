@@ -1,6 +1,6 @@
-package Topology;
+package PSOSolver.Topology;
 
-import PSOSolver.Particle;
+import PSOSolver.Particles.AbstractParticle;
 
 public class FullyConnectedTopology extends AbstractTopology {
 
@@ -8,7 +8,7 @@ public class FullyConnectedTopology extends AbstractTopology {
 	}
 
 	@Override
-	public Particle[] getNeighbours(Particle me) {
+	public AbstractParticle[] getNeighbours(AbstractParticle me) {
 		return particles;
 	}
 
