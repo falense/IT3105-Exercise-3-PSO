@@ -5,7 +5,13 @@ import PSOSolver.Particles.Particle;
 import PSOSolver.Topology.AbstractTopology;
 
 public class CircleProblem2D extends CircleProblem {
-
+	public CircleProblem2D(){
+		particleCount = 3;
+		localAttraction = 1.8;
+		globalAttraction = 1.6;
+		inertiaWeight = 1.0;
+		iterationsCutoff = 20;
+	}
 	@Override
 	public double evaluate(Vector v) {
 		double fitness = 0;

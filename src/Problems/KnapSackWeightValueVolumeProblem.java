@@ -28,10 +28,10 @@ public class KnapSackWeightValueVolumeProblem extends AbstractKnapSackProblem {
 		double valueSum = valueVector.sum();
 		double volumeSum = volumeVector.sum();
 		if (weightSum > 1000){
-			valueSum -= (weightSum-1000);
+			//valueSum = 0;//(weightSum-1000);
 		}
 		if (volumeSum > 1000){
-			valueSum -= (volumeSum-1000);
+		//	valueSum = 0;//(volumeSum-1000);
 		}
 		return -valueSum;
 	}
@@ -48,18 +48,7 @@ public class KnapSackWeightValueVolumeProblem extends AbstractKnapSackProblem {
 			packageVolumes.set(index, r.nextInt(4)+1);
 		}
 	}
-	
-	@Override
-	public double maxVectorValue() {
-		// TODO Auto-generated method stub
-		return 1.0;
-	}
 
-	@Override
-	public double minVectorValue() {
-		// TODO Auto-generated method stub
-		return 0.0;
-	}
 	@Override
 	public AbstractParticle generateParticle(AbstractProblem problem,
 			AbstractTopology topology, int particleIndex) {

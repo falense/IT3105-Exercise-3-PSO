@@ -12,17 +12,36 @@ import PSOSolver.Particles.KnapSackParticle;
 import PSOSolver.Topology.AbstractTopology;
 
 public class KnapSackWeightValueProblem extends AbstractKnapSackProblem {
+	
+	private double sigmoid(double v){
+		double t = 1.0 + Math.exp(-v);
+		return 1.0/t;
+	}
 	@Override
 	public double evaluate(Vector v) {
+		
 		Vector weightVector = VectorMath.elementMultiplication(v, packageWeights);
-		Vector valueVector = VectorMath.elementMultiplication(v, packageValues);
 		double weightSum = weightVector.sum();
-		double valueSum = valueVector.sum();
 		if (weightSum > 1000){
-			valueSum -= (weightSum-1000);
+			//valueSum -= (weightSum-1000);
+			return 0;
 		}
 		
+		Vector valueVector = VectorMath.elementMultiplication(v, packageValues);
+		double valueSum = valueVector.sum();
+		/*double valueToWeightContrib = 2*sigmoid((valueSum/weightSum)-1)-1;
+		double weightContrib = 2*sigmoid(-(weightSum-1000)/200.0)-1;
+		double valueContrib = 2*sigmoid((valueSum-1000)/250)-1;
+		return -(valueToWeightContrib+weightContrib+valueContrib)*100.0;*/
+		
+/*
+		Vector weightValueVector = VectorMath.elementDivision(packageValues, packageWeights).normalize().multiply(100);
+		double sum = VectorMath.elementMultiplication(v, weightValueVector).sum();
+		return -sum;
+		*/
 		return -valueSum;
+		
+		
 	}
 	
 	@Override
@@ -31,18 +50,15 @@ public class KnapSackWeightValueProblem extends AbstractKnapSackProblem {
 	}
 	public KnapSackWeightValueProblem(){
 		loadPackages();
-	}
-	
-	@Override
-	public double maxVectorValue() {
-		// TODO Auto-generated method stub
-		return 1.0;
-	}
 
+		particleCount = 4000;
+		localAttraction = 1.0;
+		globalAttraction = 0.6;
+		iterationsCutoff = 1000;
+	}
 	@Override
-	public double minVectorValue() {
-		// TODO Auto-generated method stub
-		return 0.0;
+	public double getInertiaWeight(){
+		return 1.0 - 0.6 * (iteration/1000.0);
 	}
 	@Override
 	public AbstractParticle generateParticle(AbstractProblem problem,

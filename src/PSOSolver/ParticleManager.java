@@ -1,25 +1,27 @@
 package PSOSolver;
 
+import LinearAlgebra.Vector;
 import PSOSolver.Particles.AbstractParticle;
 import PSOSolver.Topology.AbstractTopology;
 import PSOSolver.Topology.FullyConnectedTopology;
+import Problems.AbstractKnapSackProblem;
 import Problems.AbstractProblem;
 import Problems.KnapSackWeightValueVolumeProblem;
 
 public class ParticleManager {
 	private AbstractParticle []particles;
-	private double localAttraction = 0.0;
-	private double globalAttraction = 1.0;
-	private double inertiaWeight = 1;
 	private ParticleManagerGUI PMGUI;
-	public ParticleManager(int numParticles,AbstractProblem problem, AbstractTopology topology){
+	private AbstractProblem problem;
+	public ParticleManager(AbstractProblem problem, AbstractTopology topology){
+		this.problem = problem;
+		int numParticles = problem.getParticleCount();
+		
 		PMGUI = new ParticleManagerGUI();
 		PMGUI.setup();
+		
 		particles = new AbstractParticle[numParticles];
 		for (int i = 0; i < numParticles; i++){
 			particles[i] = problem.generateParticle(problem,topology,i);
-			particles[i].setAttraction(localAttraction, globalAttraction);
-			particles[i].setIntertiaWeight(inertiaWeight);
 		}
 		topology.setParticles(particles);
 	}
@@ -32,19 +34,41 @@ public class ParticleManager {
 	}
 	
 	public void solve(){
-		for (int iteration = 0; iteration < 1000; iteration++){
+		double lastIterationBestFitness = 0.0;
+		int iterationBestFitnessChanged = 0;
+		for (int iteration = 0; iteration < problem.getMaxIterations(); iteration++){
+			problem.setIteration(iteration);
 			step();
 			System.out.println("Iteration: " + iteration);
-			double globalBestFitness = getGlobalBestFitness();
-			PMGUI.addValue(0,globalBestFitness);
+			Vector globalBestPosition = getGlobalBestPosition();
+			double globalBestFitness = problem.evaluate(globalBestPosition);
+			PMGUI.addValue(globalBestFitness);
 			System.out.println("Global best fitness: " + globalBestFitness);
+			System.out.println("Global best position sum: " + globalBestPosition.sum());
+			if (problem.isKnapSack()){
+				AbstractKnapSackProblem kp = (AbstractKnapSackProblem)problem;
+				System.out.println("Global best position weight: " + kp.getWeight(globalBestPosition));
+				System.out.println("Global best position value: " + kp.getValue(globalBestPosition));
+			}
 			double avgFitness = getAverageFitness();
 			System.out.println("Average fitness: " + avgFitness);
-			if (false && globalBestFitness < 0.0001){
+			
+			if (!problem.isKnapSack() && globalBestFitness < 0.0001){
 				System.out.println("Fitness goal reached, aborting");
 				break;
 				
 			}
+			
+			
+			if (Math.pow(lastIterationBestFitness-globalBestFitness,2) > 0.0001 ){
+				lastIterationBestFitness = globalBestFitness;
+				iterationBestFitnessChanged = iteration;
+			}
+			if (iteration-iterationBestFitnessChanged > problem.getIterationsCutoff()){
+				System.out.println("Fitness has not changed for " + (iteration-iterationBestFitnessChanged) + " iterations, aborting.");
+				break;
+			}
+			
 		}
 	}
 	private double getAverageFitness() {
@@ -54,7 +78,7 @@ public class ParticleManager {
 		}
 		return totalFitness/particles.length;
 	}
-	private double getGlobalBestFitness(){
+	private Vector getGlobalBestPosition(){
 		double bestFitness = Double.MAX_VALUE;
 		AbstractParticle b = null;
 		for (AbstractParticle p: particles){
@@ -64,7 +88,7 @@ public class ParticleManager {
 				b = p;
 			}
 		}
-		return bestFitness;
+		return b.getBestPosition();
 	}
 	public static void main(String [] args){
 		//CircleProblem1D prob = new CircleProblem1D();
@@ -72,7 +96,7 @@ public class ParticleManager {
 		KnapSackWeightValueVolumeProblem prob = new KnapSackWeightValueVolumeProblem();
 		FullyConnectedTopology top = new FullyConnectedTopology();
 		//NearestNeighbourTopology top = new NearestNeighbourTopology(10);
-		ParticleManager pm = new ParticleManager(20,prob, top);
+		ParticleManager pm = new ParticleManager(prob, top);
 		pm.solve();
 	}
 }

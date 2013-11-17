@@ -21,17 +21,24 @@ public class Vector {
 	
 	public double get(int index) {
 		if (index < 0 || index >= size()){
-			System.err.print("Index out of bounds when getting element from vector");
+			System.err.println("Index out of bounds when getting element from vector, vector length: " + data.length + " index: " + index);
 			return -1;
 		}
 		return data[index];
 	}
 	public void set(int index, double value){
 		if (index < 0 || index >= size()){
-			System.err.print("Index out of bounds when getting element from vector");
+			System.err.println("Index out of bounds when setting element from vector, vector length: " + data.length + " index: " + index);
 			return;
 		}
 		data[index] = value;
+	}
+	public Vector normalize(){
+		double sum = sum();
+		for (int index = 0; index < size(); index++){
+			data[index] = data[index]/sum;
+		}
+		return this;
 	}
 	public Vector multiply(double value){
 		for (int index = 0; index < size(); index++){

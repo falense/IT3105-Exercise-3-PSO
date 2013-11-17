@@ -1,5 +1,6 @@
 package PSOSolver;
 
+import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -14,16 +15,18 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class ParticleManagerGUI {
 	private static PlotXYWrapper plot; 
+	private int serie;
 	public ParticleManagerGUI() {
 		if (plot == null)
 			plot = new PlotXYWrapper("Particle swarm optimization", "Best particle");
+		serie = plot.getNumSeries();
 	}
 	public void setup(){
 
 		plot.pack();
 		plot.setVisible(true);
 	}
-	public void addValue(int serie, double value){
+	public void addValue(double value){
 		plot.addValue(serie, value);
 	}
 	public void run(){
@@ -44,6 +47,8 @@ public class ParticleManagerGUI {
 		private int [] seriesMaxXValue;
 		private XYSeriesCollection dataset;
 
+		private boolean enabled = true;
+		
 		public PlotXYWrapper(String applicationTitle, String chartTitle) {
 			super(applicationTitle);
 			// This will create the dataset 
@@ -60,21 +65,18 @@ public class ParticleManagerGUI {
 		/** * Creates a sample dataset */
 		private  XYSeriesCollection createDataset() {
 
-			seriesArray = new XYSeries[1];
-			seriesMaxXValue = new int[1];
+			seriesArray = new XYSeries[0];
+			seriesMaxXValue = new int[0];/*
 			for (int serie = 0; serie < 1; serie++){
 				seriesArray[serie] = new XYSeries("Series " + serie);
 				seriesMaxXValue[serie] = 0;
-				/*for (int i = 0; i < 10; i++){
-
-					seriesArray[serie].add(i, i*serie);
-				}*/
-			}
+			
+			}*/
 			XYSeriesCollection result = new XYSeriesCollection();
-			for (int serie = 0; serie < 1; serie++){
+			/*for (int serie = 0; serie < 1; serie++){
 
 				result.addSeries(seriesArray[serie]);
-			}
+			}*/
 			return result;
 
 		}
@@ -111,13 +113,24 @@ public class ParticleManagerGUI {
 			}
 			if (serie >= seriesArray.length){
 				resizeSeries(serie+1);
+				System.err.println(serie+1 + " " + seriesArray.length);
+				//throw new IOException("lol");
+				//System.exit(0);
 			}
 			seriesArray[serie].add(seriesMaxXValue[serie]++,value);
 
 		}
-
+		public int getNumSeries(){
+			return seriesArray.length;
+		}
+		public void setEnabled(boolean b){
+			enabled = b;
+		}
 	}
-
+	public void newPlot(String applicationName, String figureName){
+		plot = new PlotXYWrapper(applicationName, figureName);
+		setup();
+	}
 	public static void main(String[] args) {
 		ParticleManagerGUI demo = new ParticleManagerGUI();
 		demo.run();

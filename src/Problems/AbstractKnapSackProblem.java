@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import LinearAlgebra.Vector;
+import LinearAlgebra.VectorMath;
 
 public abstract class AbstractKnapSackProblem extends AbstractProblem {
 	class KnapSackPackage{
@@ -15,6 +16,24 @@ public abstract class AbstractKnapSackProblem extends AbstractProblem {
 			this.value = value;
 			this.weight = weight;
 		}
+	}
+	
+	
+	@Override
+	public double maxVectorValue() {
+		// TODO Auto-generated method stub
+		return 1.0;
+	}
+
+	@Override
+	public double minVectorValue() {
+		// TODO Auto-generated method stub
+		return 0.0;
+	}
+		
+
+	public boolean isKnapSack(){
+		return true;
 	}
 	
 	protected Vector packageWeights;
@@ -45,5 +64,21 @@ public abstract class AbstractKnapSackProblem extends AbstractProblem {
 			e.printStackTrace();
 		}
 	 
+	}
+	public double getValue(Vector v){
+
+		Vector valueVector = VectorMath.elementMultiplication(v, packageValues);
+		double valueSum = valueVector.sum();
+		return valueSum;
+	}
+	public double getWeight(Vector v){
+
+		Vector weightVector = VectorMath.elementMultiplication(v, packageWeights);
+		double weightSum = weightVector.sum();
+		return weightSum;
+	}
+	public void setAttraction(double local, double global){
+		this.localAttraction = local;
+		this.globalAttraction = global;
 	}
 }

@@ -4,14 +4,19 @@ import PSOSolver.Particles.Particle;
 import PSOSolver.Topology.AbstractTopology;
 
 public abstract class CircleProblem extends AbstractProblem {
+	
+	public boolean isKnapSack(){
+		return false;
+	}
 	@Override
 	public double maxVectorValue() {
-		return 100;
+		return 10.0;
 	}
-
+	
+	
 	@Override
 	public double minVectorValue() {
-		return -100;
+		return -10.0;
 	}
 	
 
