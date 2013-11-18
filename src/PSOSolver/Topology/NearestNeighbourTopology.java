@@ -1,10 +1,22 @@
 package PSOSolver.Topology;
 
+import java.util.Arrays;
+
 import LinearAlgebra.VectorMath;
 import PSOSolver.Particles.AbstractParticle;
-import PSOSolver.Particles.Particle;
 
 public class NearestNeighbourTopology extends AbstractTopology {
+	class DistanceParticle implements Comparable<DistanceParticle>{
+		public final Double distance;
+		public final AbstractParticle particle;
+		public DistanceParticle(double distance, AbstractParticle particle){
+			this.distance = distance;
+			this.particle = particle;
+		}
+		public int compareTo(DistanceParticle p){
+			return distance.compareTo(p.distance);
+		}
+	}
 	private int neighbourCount;
 	public NearestNeighbourTopology(int neighbourCount) {
 		this.neighbourCount = neighbourCount;
@@ -12,29 +24,17 @@ public class NearestNeighbourTopology extends AbstractTopology {
 
 	@Override
 	public AbstractParticle[] getNeighbours(AbstractParticle me) {
+		DistanceParticle [] dlist = new DistanceParticle[particles.length];
+		for (int i = 0; i < particles.length; i++){
+			dlist[i] = new DistanceParticle(VectorMath.euclidianDistance(me.getPosition(), particles[i].getPosition()), particles[i]);
+		}
+		Arrays.sort(dlist);
 		AbstractParticle [] neighbours = new AbstractParticle[neighbourCount];
 		for (int i = 0; i < neighbourCount; i++){
-			if (i == 0){
-				neighbours[i] = getClosestParticle(me, 0);
-			}
-			else{
-				double minDistance = VectorMath.euclidianDistance(me.getPosition(), neighbours[i-1].getPosition());
-				neighbours[i] = getClosestParticle(me, minDistance);
-			}
+			neighbours[i] = dlist[1+i].particle;
+			//System.err.println(dlist[1+i].distance + " " + dlist[particles.length-1-i].distance);
 		}
 		return neighbours;
-	}
-	private AbstractParticle getClosestParticle(AbstractParticle me, double minDistance){
-		AbstractParticle closest = null;
-		double closestDistance = Double.MAX_VALUE;
-		for (AbstractParticle p: particles){
-			double distance = VectorMath.euclidianDistance(me.getPosition(), p.getPosition());
-			if (distance >= minDistance && closestDistance > distance){
-				closestDistance = distance;
-				closest = p;
-			}
-		}
-		return closest;
 	}
 
 }

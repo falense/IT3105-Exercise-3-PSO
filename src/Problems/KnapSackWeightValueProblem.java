@@ -51,7 +51,7 @@ public class KnapSackWeightValueProblem extends AbstractKnapSackProblem {
 	public KnapSackWeightValueProblem(){
 		loadPackages();
 
-		particleCount = 4000;
+		particleCount = 50;
 		localAttraction = 1.0;
 		globalAttraction = 0.6;
 		iterationsCutoff = 1000;

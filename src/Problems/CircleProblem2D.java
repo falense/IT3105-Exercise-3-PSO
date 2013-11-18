@@ -6,7 +6,7 @@ import PSOSolver.Topology.AbstractTopology;
 
 public class CircleProblem2D extends CircleProblem {
 	public CircleProblem2D(){
-		particleCount = 3;
+		particleCount = 10;
 		localAttraction = 1.8;
 		globalAttraction = 1.6;
 		inertiaWeight = 1.0;
