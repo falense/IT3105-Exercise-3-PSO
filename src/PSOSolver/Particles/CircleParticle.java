@@ -7,9 +7,9 @@ import LinearAlgebra.VectorMath;
 import PSOSolver.Topology.AbstractTopology;
 import Problems.AbstractProblem;
 
-public class Particle extends AbstractParticle{
+public class CircleParticle extends AbstractParticle{
 
-	public Particle(AbstractProblem problem, AbstractTopology topology,
+	public CircleParticle(AbstractProblem problem, AbstractTopology topology,
 			int particleIndex) {
 		super(problem, topology, particleIndex);
 	}

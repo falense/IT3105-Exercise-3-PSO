@@ -1,9 +1,9 @@
 package Problems;
 
-import PSOSolver.Particles.Particle;
+import PSOSolver.Particles.CircleParticle;
 import PSOSolver.Topology.AbstractTopology;
 
-public abstract class CircleProblem extends AbstractProblem {
+public abstract class AbstractCircleProblem extends AbstractProblem {
 	
 	public boolean isKnapSack(){
 		return false;
@@ -21,8 +21,8 @@ public abstract class CircleProblem extends AbstractProblem {
 	
 
 	@Override
-	public Particle generateParticle(AbstractProblem problem,
+	public CircleParticle generateParticle(AbstractProblem problem,
 			AbstractTopology topology, int particleIndex) {
-		return new Particle(problem, topology, particleIndex);
+		return new CircleParticle(problem, topology, particleIndex);
 	}
 }

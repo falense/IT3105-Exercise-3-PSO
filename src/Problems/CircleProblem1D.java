@@ -4,7 +4,7 @@ import LinearAlgebra.Vector;
 
 
 
-public class CircleProblem1D extends CircleProblem {
+public class CircleProblem1D extends AbstractCircleProblem {
 	public CircleProblem1D(){
 		particleCount = 10;
 		localAttraction = 0.5;

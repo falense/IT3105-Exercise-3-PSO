@@ -1,10 +1,10 @@
 package Problems;
 
 import LinearAlgebra.Vector;
-import PSOSolver.Particles.Particle;
+import PSOSolver.Particles.CircleParticle;
 import PSOSolver.Topology.AbstractTopology;
 
-public class CircleProblem2D extends CircleProblem {
+public class CircleProblem2D extends AbstractCircleProblem {
 	public CircleProblem2D(){
 		particleCount = 10;
 		localAttraction = 1.8;

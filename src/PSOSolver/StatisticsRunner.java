@@ -1,13 +1,13 @@
 package PSOSolver;
 
 import PSOSolver.Topology.FullyConnectedTopology;
-import PSOSolver.Topology.NearestNeighbourTopology;
+import PSOSolver.Topology.NearestNeighborTopology;
 import Problems.AbstractProblem;
 import Problems.CircleProblem1D;
 import Problems.CircleProblem2D;
 import Problems.CircleProblemND;
-import Problems.KnapSackWeightValueProblem;
-import Problems.KnapSackWeightValueVolumeProblem;
+import Problems.KnapsackWeightValueProblem;
+import Problems.KnapsackWeightValueVolumeProblem;
 
 public class StatisticsRunner {
 	ParticleManagerGUI pmgui;
@@ -47,7 +47,7 @@ public class StatisticsRunner {
 	}
 
 	public void Task2a(){
-		NearestNeighbourTopology top = new NearestNeighbourTopology(3);
+		NearestNeighborTopology top = new NearestNeighborTopology(3);
 		makeNewPlot("Task2a", "Circle problem 1D vs 2D");
 		AbstractProblem prob = new CircleProblem1D();
 		ParticleManager pm = new ParticleManager(prob, top, true, false);
@@ -59,7 +59,7 @@ public class StatisticsRunner {
 	}
 	public void Task2b(){
 		makeNewPlot("Task2b", "Circle problem 1D vs 2D with varying inertia weight");
-		NearestNeighbourTopology top = new NearestNeighbourTopology(3);
+		NearestNeighborTopology top = new NearestNeighborTopology(3);
 		
 		AbstractProblem prob = new CircleProblem1D();
 		prob.setVariableInertia(true);
@@ -76,7 +76,7 @@ public class StatisticsRunner {
 		
 		FullyConnectedTopology top = new FullyConnectedTopology();
 		
-		AbstractProblem prob = new KnapSackWeightValueProblem();
+		AbstractProblem prob = new KnapsackWeightValueProblem();
 		prob.setMaxIterations(500);
 		ParticleManager pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
@@ -86,7 +86,7 @@ public class StatisticsRunner {
 		makeNewPlot("Task3b", "KnapSack weight+value (c1,c2) = (0.0,2.0) / (1.0,1.0) / (2.0/0.0)");
 		FullyConnectedTopology top = new FullyConnectedTopology();
 
-		KnapSackWeightValueProblem prob = new KnapSackWeightValueProblem();
+		KnapsackWeightValueProblem prob = new KnapsackWeightValueProblem();
 		prob.setAttraction(0.0,2.0);
 		ParticleManager pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
@@ -103,7 +103,7 @@ public class StatisticsRunner {
 		makeNewPlot("Task3c", "KnapSack weight+value vari. inertia (c1,c2) = (0.0,2.0) / (1.0,1.0) / (2.0/0.0)");
 		FullyConnectedTopology top = new FullyConnectedTopology();
 
-		KnapSackWeightValueProblem prob = new KnapSackWeightValueProblem();
+		KnapsackWeightValueProblem prob = new KnapsackWeightValueProblem();
 		prob.setAttraction(0.0,2.0);
 		prob.setVariableInertia(true);
 		ParticleManager pm = new ParticleManager(prob, top, true, false);
@@ -120,7 +120,7 @@ public class StatisticsRunner {
 	public void Task4a(){
 		makeNewPlot("Task4a", "KnapSack weight+value+volume vari. inertia");
 		FullyConnectedTopology top = new FullyConnectedTopology();
-		KnapSackWeightValueVolumeProblem prob = new KnapSackWeightValueVolumeProblem();
+		KnapsackWeightValueVolumeProblem prob = new KnapsackWeightValueVolumeProblem();
 		prob.setAttraction(1.0,2.0);
 		prob.setVariableInertia(true);
 		prob.setIterationCutoff(1000);
@@ -130,7 +130,7 @@ public class StatisticsRunner {
 	}
 	public void Test(){
 		//CircleProblemND prob = new CircleProblemND(20);
-		KnapSackWeightValueProblem prob = new KnapSackWeightValueProblem();
+		KnapsackWeightValueProblem prob = new KnapsackWeightValueProblem();
 		//KnapSackWeightValueVolumeProblem prob = new KnapSackWeightValueVolumeProblem();
 		prob.setVariableInertia(true);
 

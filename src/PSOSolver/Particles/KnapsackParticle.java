@@ -7,9 +7,9 @@ import LinearAlgebra.VectorMath;
 import PSOSolver.Topology.AbstractTopology;
 import Problems.AbstractProblem;
 
-public class KnapSackParticle extends AbstractParticle {
+public class KnapsackParticle extends AbstractParticle {
 
-	public KnapSackParticle(AbstractProblem problem, AbstractTopology topology, int particleIndex) {
+	public KnapsackParticle(AbstractProblem problem, AbstractTopology topology, int particleIndex) {
 		super(problem, topology, particleIndex);
 	}
 	@Override

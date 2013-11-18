@@ -2,7 +2,7 @@ package Problems;
 
 import LinearAlgebra.Vector;
 
-public class CircleProblemND extends CircleProblem {
+public class CircleProblemND extends AbstractCircleProblem {
 		private final int N;
 		public CircleProblemND(int N){
 			localAttraction = 1.8;

@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import LinearAlgebra.Vector;
 import LinearAlgebra.VectorMath;
 
-public abstract class AbstractKnapSackProblem extends AbstractProblem {
+public abstract class AbstractKnapsackProblem extends AbstractProblem {
 	class KnapSackPackage{
 		public final double value;
 		public final double weight;

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import LinearAlgebra.VectorMath;
 import PSOSolver.Particles.AbstractParticle;
 
-public class NearestNeighbourTopology extends AbstractTopology {
+public class NearestNeighborTopology extends AbstractTopology {
 	class DistanceParticle implements Comparable<DistanceParticle>{
 		public final Double distance;
 		public final AbstractParticle particle;
@@ -18,7 +18,7 @@ public class NearestNeighbourTopology extends AbstractTopology {
 		}
 	}
 	private int neighbourCount;
-	public NearestNeighbourTopology(int neighbourCount) {
+	public NearestNeighborTopology(int neighbourCount) {
 		this.neighbourCount = neighbourCount;
 	}
 

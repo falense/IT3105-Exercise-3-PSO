@@ -1,7 +1,7 @@
 package PSOSolver.Topology;
 
 import PSOSolver.Particles.AbstractParticle;
-import PSOSolver.Particles.Particle;
+import PSOSolver.Particles.CircleParticle;
 
 
 public abstract class AbstractTopology {

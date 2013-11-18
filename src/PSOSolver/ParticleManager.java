@@ -4,9 +4,9 @@ import LinearAlgebra.Vector;
 import PSOSolver.Particles.AbstractParticle;
 import PSOSolver.Topology.AbstractTopology;
 import PSOSolver.Topology.FullyConnectedTopology;
-import Problems.AbstractKnapSackProblem;
+import Problems.AbstractKnapsackProblem;
 import Problems.AbstractProblem;
-import Problems.KnapSackWeightValueVolumeProblem;
+import Problems.KnapsackWeightValueVolumeProblem;
 
 public class ParticleManager {
 	private AbstractParticle []particles;
@@ -62,7 +62,7 @@ public class ParticleManager {
 			println("Global best fitness: " + globalBestFitness);
 			println("Global best position sum: " + globalBestPosition.sum());
 			if (problem.isKnapSack()){
-				AbstractKnapSackProblem kp = (AbstractKnapSackProblem)problem;
+				AbstractKnapsackProblem kp = (AbstractKnapsackProblem)problem;
 				println("Global best position weight: " + kp.getWeight(globalBestPosition));
 				println("Global best position value: " + kp.getValue(globalBestPosition));
 			}
@@ -114,7 +114,7 @@ public class ParticleManager {
 	public static void main(String [] args){
 		//CircleProblem1D prob = new CircleProblem1D();
 		//CircleProblem2D prob = new CircleProblem2D();
-		KnapSackWeightValueVolumeProblem prob = new KnapSackWeightValueVolumeProblem();
+		KnapsackWeightValueVolumeProblem prob = new KnapsackWeightValueVolumeProblem();
 		FullyConnectedTopology top = new FullyConnectedTopology();
 		//NearestNeighbourTopology top = new NearestNeighbourTopology(10);
 		ParticleManager pm = new ParticleManager(prob, top,true,true);
