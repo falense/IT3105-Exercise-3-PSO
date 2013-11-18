@@ -12,18 +12,30 @@ public class ParticleManager {
 	private AbstractParticle []particles;
 	private ParticleManagerGUI PMGUI;
 	private AbstractProblem problem;
-	public ParticleManager(AbstractProblem problem, AbstractTopology topology){
-		this.problem = problem;
+	private AbstractTopology topology;
+	private boolean debug;
+	private int iteration;
+	private double globalBestFitness;
+	public void createParticles(){
 		int numParticles = problem.getParticleCount();
-		
-		PMGUI = new ParticleManagerGUI();
-		PMGUI.setup();
-		
 		particles = new AbstractParticle[numParticles];
 		for (int i = 0; i < numParticles; i++){
 			particles[i] = problem.generateParticle(problem,topology,i);
 		}
 		topology.setParticles(particles);
+	}
+	public ParticleManager(AbstractProblem problem, AbstractTopology topology, boolean gui, boolean debug){
+		this.problem = problem;
+		this.topology = topology;
+		createParticles();
+		if (gui){
+			PMGUI = new ParticleManagerGUI();
+			PMGUI.setup();
+		}
+		else{
+			PMGUI = null;
+		}
+		this.debug = debug;
 	}
 	public void step(){
 		for (AbstractParticle p: particles){
@@ -32,29 +44,32 @@ public class ParticleManager {
 		}
 		//System.out.println();
 	}
-	
+	public void println(String output){
+		if (debug) System.out.println(output);
+	}
 	public void solve(){
 		double lastIterationBestFitness = 0.0;
 		int iterationBestFitnessChanged = 0;
-		for (int iteration = 0; iteration < problem.getMaxIterations(); iteration++){
+		for (iteration = 0; iteration < problem.getMaxIterations(); iteration++){
 			problem.setIteration(iteration);
 			step();
-			System.out.println("Iteration: " + iteration);
 			Vector globalBestPosition = getGlobalBestPosition();
-			double globalBestFitness = problem.evaluate(globalBestPosition);
-			PMGUI.addValue(globalBestFitness);
-			System.out.println("Global best fitness: " + globalBestFitness);
-			System.out.println("Global best position sum: " + globalBestPosition.sum());
+			globalBestFitness = problem.evaluate(globalBestPosition);
+			double avgFitness = getAverageFitness();
+			if (PMGUI != null) PMGUI.addValue(globalBestFitness);
+			
+			println("Iteration: " + iteration);
+			println("Global best fitness: " + globalBestFitness);
+			println("Global best position sum: " + globalBestPosition.sum());
 			if (problem.isKnapSack()){
 				AbstractKnapSackProblem kp = (AbstractKnapSackProblem)problem;
-				System.out.println("Global best position weight: " + kp.getWeight(globalBestPosition));
-				System.out.println("Global best position value: " + kp.getValue(globalBestPosition));
+				println("Global best position weight: " + kp.getWeight(globalBestPosition));
+				println("Global best position value: " + kp.getValue(globalBestPosition));
 			}
-			double avgFitness = getAverageFitness();
-			System.out.println("Average fitness: " + avgFitness);
+			println("Average fitness: " + avgFitness);
 			
 			if (!problem.isKnapSack() && globalBestFitness < 0.0001){
-				System.out.println("Fitness goal reached, aborting");
+				println("Fitness goal reached, aborting");
 				break;
 				
 			}
@@ -65,11 +80,17 @@ public class ParticleManager {
 				iterationBestFitnessChanged = iteration;
 			}
 			if (iteration-iterationBestFitnessChanged > problem.getIterationsCutoff()){
-				System.out.println("Fitness has not changed for " + (iteration-iterationBestFitnessChanged) + " iterations, aborting.");
+				println("Fitness has not changed for " + (iteration-iterationBestFitnessChanged) + " iterations, aborting.");
 				break;
 			}
 			
 		}
+	}
+	public double getGlobalBestFitness(){
+		return globalBestFitness;
+	}
+	public int getIterations(){
+		return iteration;
 	}
 	private double getAverageFitness() {
 		double totalFitness = 0.0;
@@ -96,7 +117,7 @@ public class ParticleManager {
 		KnapSackWeightValueVolumeProblem prob = new KnapSackWeightValueVolumeProblem();
 		FullyConnectedTopology top = new FullyConnectedTopology();
 		//NearestNeighbourTopology top = new NearestNeighbourTopology(10);
-		ParticleManager pm = new ParticleManager(prob, top);
+		ParticleManager pm = new ParticleManager(prob, top,true,true);
 		pm.solve();
 	}
 }

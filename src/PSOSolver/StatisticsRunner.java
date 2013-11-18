@@ -17,113 +17,130 @@ public class StatisticsRunner {
 	private void makeNewPlot(String applicationName, String figureName){
 		pmgui.newPlot(applicationName,figureName);
 	}
+	public void Task1a(){
+		FullyConnectedTopology top = new FullyConnectedTopology();
+		CircleProblem1D prob = new CircleProblem1D();
+		ParticleManager pm = new ParticleManager(prob, top, false, true);
+		pm.solve();
+	}
 	public void Task1b(){
-		makeNewPlot("Task1b", "Prob: CP1D Top: FC");
 		
+		System.out.println("Task1b:");
 		FullyConnectedTopology top = new FullyConnectedTopology();
 		CircleProblem1D prob = new CircleProblem1D();
 		for (int i = 0; i < 10; i++){
-			ParticleManager pm = new ParticleManager(prob, top);
+			ParticleManager pm = new ParticleManager(prob, top, false, false);
 			pm.solve();
+			System.out.println("Run " + i + ": Finished after " + pm.getIterations() +  " iterations with best fitness " + pm.getGlobalBestFitness());
 		}
+		System.out.println();
 	}
 	public void Task1c(){
 		FullyConnectedTopology top = new FullyConnectedTopology();
 		CircleProblem2D prob = new CircleProblem2D();
-		ParticleManager pm = new ParticleManager(prob, top);
+		prob.setIterationCutoff(1000);
+		ParticleManager pm = new ParticleManager(prob, top, false, false);
 		pm.solve();
+		System.out.println("Task 1c:");
+		System.out.println("Finished after " + pm.getIterations() +  " iterations with best fitness " + pm.getGlobalBestFitness());
+		System.out.println();
 	}
 
 	public void Task2a(){
-		FullyConnectedTopology top = new FullyConnectedTopology();
-		
-		AbstractProblem prob = new CircleProblem2D();
-		ParticleManager pm = new ParticleManager(prob, top);
+		NearestNeighbourTopology top = new NearestNeighbourTopology(3);
+		makeNewPlot("Task2a", "Circle problem 1D vs 2D");
+		AbstractProblem prob = new CircleProblem1D();
+		ParticleManager pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 		
 		prob = new CircleProblem2D();
-		pm = new ParticleManager(prob, top);
+		pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 	}
 	public void Task2b(){
-		FullyConnectedTopology top = new FullyConnectedTopology();
+		makeNewPlot("Task2b", "Circle problem 1D vs 2D with varying inertia weight");
+		NearestNeighbourTopology top = new NearestNeighbourTopology(3);
 		
-		AbstractProblem prob = new CircleProblem2D();
+		AbstractProblem prob = new CircleProblem1D();
 		prob.setVariableInertia(true);
-		ParticleManager pm = new ParticleManager(prob, top);
+		ParticleManager pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 		
 		prob = new CircleProblem2D();
 		prob.setVariableInertia(true);
-		pm = new ParticleManager(prob, top);
+		pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 	}
 	public void Task3a(){
+		makeNewPlot("Task3a", "KnapSack weight+value");
+		
 		FullyConnectedTopology top = new FullyConnectedTopology();
 		
 		AbstractProblem prob = new KnapSackWeightValueProblem();
-		ParticleManager pm = new ParticleManager(prob, top);
+		prob.setMaxIterations(500);
+		ParticleManager pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 	}
 	public void Task3b(){
+
+		makeNewPlot("Task3b", "KnapSack weight+value (c1,c2) = (0.0,2.0) / (1.0,1.0) / (2.0/0.0)");
 		FullyConnectedTopology top = new FullyConnectedTopology();
 
 		KnapSackWeightValueProblem prob = new KnapSackWeightValueProblem();
-		prob.setAttraction(1.0,2.0);
-		ParticleManager pm = new ParticleManager(prob, top);
+		prob.setAttraction(0.0,2.0);
+		ParticleManager pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 
-		prob = new KnapSackWeightValueProblem();
-		prob.setAttraction(1.5,1.5);
-		pm = new ParticleManager(prob, top);
+		prob.setAttraction(1.0,1.0);
+		pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 		
-		prob = new KnapSackWeightValueProblem();
-		prob.setAttraction(2.0,1.0);
-		pm = new ParticleManager(prob, top);
+		prob.setAttraction(2.0,0.0);
+		pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 	}
 	public void Task3c(){
-
+		makeNewPlot("Task3c", "KnapSack weight+value vari. inertia (c1,c2) = (0.0,2.0) / (1.0,1.0) / (2.0/0.0)");
 		FullyConnectedTopology top = new FullyConnectedTopology();
-		
+
 		KnapSackWeightValueProblem prob = new KnapSackWeightValueProblem();
-		prob.setAttraction(1.0,2.0);
+		prob.setAttraction(0.0,2.0);
 		prob.setVariableInertia(true);
-		ParticleManager pm = new ParticleManager(prob, top);
+		ParticleManager pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 
-		prob = new KnapSackWeightValueProblem();
-		prob.setAttraction(1.5,1.5);
-		prob.setVariableInertia(true);
-		pm = new ParticleManager(prob, top);
+		prob.setAttraction(1.0,1.0);
+		pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 		
-		prob = new KnapSackWeightValueProblem();
-		prob.setAttraction(2.0,1.0);
-		prob.setVariableInertia(true);
-		pm = new ParticleManager(prob, top);
+		prob.setAttraction(2.0,0.0);
+		pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 	}
 	public void Task4a(){
+		makeNewPlot("Task4a", "KnapSack weight+value+volume vari. inertia");
 		FullyConnectedTopology top = new FullyConnectedTopology();
 		KnapSackWeightValueVolumeProblem prob = new KnapSackWeightValueVolumeProblem();
 		prob.setAttraction(1.0,2.0);
 		prob.setVariableInertia(true);
-		ParticleManager pm = new ParticleManager(prob, top);
+		prob.setIterationCutoff(1000);
+		prob.setMaxIterations(1000);
+		ParticleManager pm = new ParticleManager(prob, top, true, false);
 		pm.solve();
 	}
 	public void Test(){
-		CircleProblemND prob = new CircleProblemND(20);
-		//KnapSackWeightValueProblem prob = new KnapSackWeightValueProblem();
+		//CircleProblemND prob = new CircleProblemND(20);
+		KnapSackWeightValueProblem prob = new KnapSackWeightValueProblem();
 		//KnapSackWeightValueVolumeProblem prob = new KnapSackWeightValueVolumeProblem();
-	
+		prob.setVariableInertia(true);
+
+		
 		//CircleProblem2D prob = new CircleProblem2D();
 		//NearestNeighbourTopology top = new NearestNeighbourTopology(4);
 		FullyConnectedTopology top = new FullyConnectedTopology();
 		
 		for (int i = 0; i < 10; i++){
-			ParticleManager pm = new ParticleManager(prob, top);
+			ParticleManager pm = new ParticleManager(prob, top, true, true);
 			pm.solve();
 		}
 		
@@ -131,8 +148,17 @@ public class StatisticsRunner {
 	}
 	public static void main(String [] args){
 		StatisticsRunner s = new StatisticsRunner();
-		s.Test();
+		s.Task1a();
+		s.Task1b();
+		s.Task1c();
+		s.Task2a();
+		s.Task2b();
+		s.Task3a();
+		s.Task3b();
+		s.Task3c();
+		s.Task4a();
 		
+		//s.Test();
 	}
 	
 }

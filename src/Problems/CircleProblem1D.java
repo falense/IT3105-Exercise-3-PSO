@@ -6,7 +6,7 @@ import LinearAlgebra.Vector;
 
 public class CircleProblem1D extends CircleProblem {
 	public CircleProblem1D(){
-		particleCount = 3;
+		particleCount = 10;
 		localAttraction = 0.5;
 		globalAttraction = 1.6;
 		iterationsCutoff = 20;

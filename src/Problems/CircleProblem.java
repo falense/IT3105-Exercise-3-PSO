@@ -10,13 +10,13 @@ public abstract class CircleProblem extends AbstractProblem {
 	}
 	@Override
 	public double maxVectorValue() {
-		return 10.0;
+		return 100.0;
 	}
 	
 	
 	@Override
 	public double minVectorValue() {
-		return -10.0;
+		return -100.0;
 	}
 	
 

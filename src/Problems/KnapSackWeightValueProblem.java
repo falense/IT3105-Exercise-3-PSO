@@ -13,32 +13,15 @@ import PSOSolver.Topology.AbstractTopology;
 
 public class KnapSackWeightValueProblem extends AbstractKnapSackProblem {
 	
-	private double sigmoid(double v){
-		double t = 1.0 + Math.exp(-v);
-		return 1.0/t;
-	}
 	@Override
 	public double evaluate(Vector v) {
-		
 		Vector weightVector = VectorMath.elementMultiplication(v, packageWeights);
-		double weightSum = weightVector.sum();
-		if (weightSum > 1000){
-			//valueSum -= (weightSum-1000);
-			return 0;
-		}
-		
 		Vector valueVector = VectorMath.elementMultiplication(v, packageValues);
+		double weightSum = weightVector.sum();
 		double valueSum = valueVector.sum();
-		/*double valueToWeightContrib = 2*sigmoid((valueSum/weightSum)-1)-1;
-		double weightContrib = 2*sigmoid(-(weightSum-1000)/200.0)-1;
-		double valueContrib = 2*sigmoid((valueSum-1000)/250)-1;
-		return -(valueToWeightContrib+weightContrib+valueContrib)*100.0;*/
-		
-/*
-		Vector weightValueVector = VectorMath.elementDivision(packageValues, packageWeights).normalize().multiply(100);
-		double sum = VectorMath.elementMultiplication(v, weightValueVector).sum();
-		return -sum;
-		*/
+		if (weightSum > 1000){
+			valueSum = 0;
+		}
 		return -valueSum;
 		
 		
@@ -51,15 +34,13 @@ public class KnapSackWeightValueProblem extends AbstractKnapSackProblem {
 	public KnapSackWeightValueProblem(){
 		loadPackages();
 
-		particleCount = 50;
-		localAttraction = 1.0;
-		globalAttraction = 0.6;
+		particleCount = 200;
+		localAttraction = 1.8;
+		globalAttraction = 1.0;
 		iterationsCutoff = 1000;
+		maxIterations = 1000;
 	}
-	@Override
-	public double getInertiaWeight(){
-		return 1.0 - 0.6 * (iteration/1000.0);
-	}
+	
 	@Override
 	public AbstractParticle generateParticle(AbstractProblem problem,
 			AbstractTopology topology, int particleIndex) {

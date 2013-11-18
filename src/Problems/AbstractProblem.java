@@ -14,7 +14,12 @@ public abstract class AbstractProblem {
 	protected double inertiaWeight = 1.0; 
 	protected int iteration = 0;
 	protected int maxIterations = 1000;
-	
+	public void setIterationCutoff(int iterationCutoff){
+		this.iterationsCutoff = iterationCutoff;
+	}
+	public void setMaxIterations(int maxIterations){
+		this.maxIterations = maxIterations;
+	}
 	public double getLocalAttraction(){
 		return localAttraction;
 	}

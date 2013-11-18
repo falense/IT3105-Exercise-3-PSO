@@ -28,10 +28,10 @@ public class KnapSackWeightValueVolumeProblem extends AbstractKnapSackProblem {
 		double valueSum = valueVector.sum();
 		double volumeSum = volumeVector.sum();
 		if (weightSum > 1000){
-			//valueSum = 0;//(weightSum-1000);
+			valueSum = 0;
 		}
 		if (volumeSum > 1000){
-		//	valueSum = 0;//(volumeSum-1000);
+			valueSum = 0;
 		}
 		return -valueSum;
 	}
@@ -43,10 +43,16 @@ public class KnapSackWeightValueVolumeProblem extends AbstractKnapSackProblem {
 	public KnapSackWeightValueVolumeProblem(){
 		loadPackages();
 		packageVolumes = new Vector(packageValues.size());
-		Random r = new Random();
+		Random r = new Random(getSeed());
 		for (int index = 0; index < packageValues.size(); index++){
 			packageVolumes.set(index, r.nextInt(4)+1);
 		}
+		particleCount = 200;
+		localAttraction = 1.8;
+		globalAttraction = 1.0;
+		iterationsCutoff = 1000;
+		maxIterations = 1000;
+		
 	}
 
 	@Override
