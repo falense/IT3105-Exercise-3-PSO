@@ -148,15 +148,15 @@ public class StatisticsRunner {
 	}
 	public static void main(String [] args){
 		StatisticsRunner s = new StatisticsRunner();
-		s.Task1a();
+		/*s.Task1a();
 		s.Task1b();
 		s.Task1c();
 		s.Task2a();
 		s.Task2b();
-		/*s.Task3a();
+		s.Task3a();
 		s.Task3b();
-		s.Task3c();
-		s.Task4a();*/
+		s.Task3c();*/
+		s.Task4a();
 		
 		//s.Test();
 	}

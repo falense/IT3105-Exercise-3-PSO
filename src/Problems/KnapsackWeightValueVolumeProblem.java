@@ -21,15 +21,15 @@ public class KnapsackWeightValueVolumeProblem extends AbstractKnapsackProblem {
 	
 	@Override
 	public double evaluate(Vector v) {
-		Vector weightVector = VectorMath.elementMultiplication(v, packageWeights);
+		//Vector weightVector = VectorMath.elementMultiplication(v, packageWeights);
 		Vector valueVector = VectorMath.elementMultiplication(v, packageValues);
 		Vector volumeVector = VectorMath.elementMultiplication(v, packageVolumes);
-		double weightSum = weightVector.sum();
+		//double weightSum = weightVector.sum();
 		double valueSum = valueVector.sum();
 		double volumeSum = volumeVector.sum();
-		if (weightSum > 1000){
+		/*if (weightSum > 1000){
 			valueSum = 0;
-		}
+		}*/
 		if (volumeSum > 1000){
 			valueSum = 0;
 		}
